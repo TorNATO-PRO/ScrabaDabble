@@ -51,7 +51,7 @@ import java.util.stream.IntStream;
 public class Main {
 
   // fields for storing the maximum possible input, a wordlist, and character values
-  private static final int MAX_INPUT = 10;
+  private static final int MAX_INPUT = 15; // size of scrabble board
   private static Map<Character, Integer> characterValues;
 
   /**
@@ -116,16 +116,32 @@ public class Main {
       br = new BufferedReader(new FileReader(filename));
       String currentLine;
       while ((currentLine = br.readLine()) != null) {
-        currentLine = currentLine.toUpperCase();
-        if (currentLine.length() <= MAX_INPUT && isAlphabetic(currentLine)) {
-          wordMap.put(currentLine, new Word(currentLine, score(currentLine)));
-        }
+        validateWordlistLine(currentLine, wordMap);
       }
       br.close();
     } catch (FileNotFoundException exception) {
       exception.printStackTrace();
     }
     return wordMap;
+  }
+
+  /**
+   * A helper method to verify that the input from the
+   * wordlist is indeed a valid word that fits within the
+   * constraints of this program
+   *
+   * @param line A line that is provided by the client that they wish
+   *             to be validated
+   * @param wordMap A word map that acts as a dictionary-like data structure
+   */
+  private static void validateWordlistLine(
+    String line,
+    Map<String, Word> wordMap
+  ) {
+    String toUpperCase = line.toUpperCase();
+    if (toUpperCase.length() <= MAX_INPUT && isAlphabetic(toUpperCase)) {
+      wordMap.put(toUpperCase, new Word(toUpperCase, score(toUpperCase)));
+    }
   }
 
   /**
@@ -147,16 +163,31 @@ public class Main {
       br = new BufferedReader(new FileReader(filename));
       String currentLine;
       while ((currentLine = br.readLine()) != null) {
-        String[] values = currentLine.split(",");
-        Character character = values[0].trim().charAt(0);
-        Integer val = Integer.parseInt(values[1].trim());
-        valueOfCharacter.put(character, val);
+        parseCharacterValues(currentLine, valueOfCharacter);
       }
       br.close();
     } catch (FileNotFoundException exception) {
       exception.printStackTrace();
     }
     return valueOfCharacter;
+  }
+
+  /**
+   * Parses the character file to obtain the scores for those characters
+   *
+   * @param line The line passed by a client which is intended to be parsed
+   * @param valueOfCharacter A dictionary-like data structure containing all of the
+   *                         characters in the file as well as their corresponding integer
+   *                         value
+   */
+  private static void parseCharacterValues(
+    String line,
+    Map<Character, Integer> valueOfCharacter
+  ) {
+    String[] values = line.split(",");
+    Character character = values[0].trim().charAt(0);
+    Integer val = Integer.parseInt(values[1].trim());
+    valueOfCharacter.put(character, val);
   }
 
   /**
