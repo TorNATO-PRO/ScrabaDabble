@@ -81,19 +81,20 @@ public class Main {
     System.out.println(
       "cheat and (:L) to lookup. Also, press (:Q) to quit. Enjoy!"
     );
-    for (;;) {
+    boolean stop = false;
+    do {
       String firstInput = userIn.nextLine();
       if (firstInput.equalsIgnoreCase(":C")) {
         cheat(userIn);
       } else if (firstInput.equalsIgnoreCase(":L")) {
         lookup(userIn);
       } else if (firstInput.equalsIgnoreCase(":Q")) {
-        break;
+        stop = true;
       } else {
         System.out.println("Your input could not be understood!");
       }
       System.out.println();
-    }
+    } while (!stop);
   }
 
   /**
