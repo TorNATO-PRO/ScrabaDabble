@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * A main method for my Scrabble program. Basically, what this program allows you
@@ -112,7 +113,8 @@ public class Main {
                 if (currentLine.length() < 8) {
                     boolean isAlphabetic = true;
                     currentLine = currentLine.toUpperCase();
-                    for (char c : currentLine.toCharArray()) {
+                    char[] charArray = currentLine.toCharArray();
+                    for (char c : charArray) {
                         if (!Character.isAlphabetic(c)) {
                             isAlphabetic = false;
                             break;
@@ -174,8 +176,8 @@ public class Main {
         if (!isAlphabetic(input) || input.length() > MAX_INPUT) {
             System.out.println("That is not a valid input!");
         } else {
-            Set<Word> subsets = genSubsets(input.toCharArray());
-            for (Word word : subsets) {
+            Set<Word> powerSet = genSubsets(input.toCharArray());
+            for (Word word : powerSet) {
                 System.out.println("Word: " + word.getWord() + ", Score: " + word.getScore());
             }
         }
@@ -208,7 +210,8 @@ public class Main {
      * characters in the input are alphabetic
      */
     private static boolean isAlphabetic(String input) {
-        for (char c : input.toCharArray()) {
+        char[] charArray = input.toCharArray();
+        for (char c : charArray) {
             if (!Character.isAlphabetic(c)) {
                 return false;
             }
@@ -251,11 +254,14 @@ public class Main {
         if (wordList.containsKey(result)) {
             subsets.add(wordList.get(result));
         }
-        for (int i = index; i < word.length; i++) {
+
+        // loops through the word and recursively backtracks
+        // in a functional paradigm manner
+        IntStream.range(index, word.length).forEach(i -> {
             temp.push(word[i]);
             genSubsets(word, subsets, temp, i + 1);
             temp.pop();
-        }
+        });
     }
 
     /**
