@@ -116,20 +116,11 @@ public class Main {
       br = new BufferedReader(new FileReader(filename));
       String currentLine;
       while ((currentLine = br.readLine()) != null) {
-        if (currentLine.length() < 8) {
-          boolean isAlphabetic = true;
-          currentLine = currentLine.toUpperCase();
-          char[] charArray = currentLine.toCharArray();
-          for (char c : charArray) {
-            if (!Character.isAlphabetic(c)) {
-              isAlphabetic = false;
-              break;
-            }
-          }
-          if (isAlphabetic) {
+        currentLine = currentLine.toUpperCase();
+          if (currentLine.length() <= MAX_INPUT &&
+                  isAlphabetic(currentLine)) {
             wordMap.put(currentLine, new Word(currentLine, score(currentLine)));
           }
-        }
       }
       br.close();
     } catch (FileNotFoundException exception) {
@@ -293,7 +284,7 @@ public class Main {
    * @return A string representation of the passed array parameter
    */
   private static String toString(List<Character> array) {
-    if (array.size() == 0) {
+    if (array.isEmpty()) {
       return "";
     }
     StringBuilder temp = new StringBuilder();
