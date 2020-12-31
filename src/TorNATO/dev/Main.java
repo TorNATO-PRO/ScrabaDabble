@@ -117,10 +117,9 @@ public class Main {
       String currentLine;
       while ((currentLine = br.readLine()) != null) {
         currentLine = currentLine.toUpperCase();
-          if (currentLine.length() <= MAX_INPUT &&
-                  isAlphabetic(currentLine)) {
-            wordMap.put(currentLine, new Word(currentLine, score(currentLine)));
-          }
+        if (currentLine.length() <= MAX_INPUT && isAlphabetic(currentLine)) {
+          wordMap.put(currentLine, new Word(currentLine, score(currentLine)));
+        }
       }
       br.close();
     } catch (FileNotFoundException exception) {
