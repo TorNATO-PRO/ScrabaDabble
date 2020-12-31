@@ -192,8 +192,8 @@ public class Main {
      */
     public static void lookup(Scanner userIn) {
         System.out.println("Please enter a word");
-        String input = userIn.nextLine().toUpperCase();
-        if (wordList.containsKey(input)) {
+        String input = userIn.nextLine();
+        if (wordList.containsKey(input.toUpperCase())) {
             System.out.println(input + " is a valid word with a score of "
                     + wordList.get(input).getScore() + "!");
         } else {
