@@ -203,8 +203,8 @@ public class Main {
     if (!isAlphabetic(input) || input.length() > MAX_INPUT) {
       System.out.println("That is not a valid input!");
     } else {
-      Set<Word> powerSet = genSubsets(input.toCharArray());
-      for (Word word : powerSet) {
+      Set<Word> combos = genCombos(input.toCharArray());
+      for (Word word : combos) {
         System.out.println(
           "Word: " + word.getWord() + ", Score: " + word.getScore()
         );
@@ -259,34 +259,32 @@ public class Main {
    *
    * @param word A character array which contains characters for which
    *             we wish to find a subset
-   * @return A "power set" of all the characters that are
+   * @return Combination of all the characters that are
    * contained in the passed word character array
    */
-  public static Set<Word> genSubsets(char[] word) {
+  public static Set<Word> genCombos(char[] word) {
     Set<Word> subsets = new TreeSet<>();
     if (word.length == 0) {
       return subsets;
     }
-    genSubsets(word, subsets, new Stack<>(), 0);
+    genCombos(word, subsets, new Stack<>());
     return subsets;
   }
 
   /**
-   * A helper method which does the heavy lifting and generates the subsets
-   * for the power set
+   * A helper method which does the heavy lifting and generates the combinations
+   * of the power set
    *
    * @param word A character array which contains characters for which
-   *             we wish to find a subset
+   *             we wish to find a combination
    * @param subsets A set of subsets of the word parameter
    * @param temp A stack of characters which stores values obtained throughout
    *             the execution of this method
-   * @param index The current index
    */
-  private static void genSubsets(
+  private static void genCombos(
     char[] word,
     Set<Word> subsets,
-    Stack<Character> temp,
-    int index
+    Stack<Character> temp
   ) {
     String result = toString(new ArrayList<>(temp));
     if (wordList.containsKey(result)) {
@@ -296,11 +294,12 @@ public class Main {
     // loops through the word and recursively backtracks
     // in a functional paradigm manner
     IntStream
-      .range(index, word.length)
+      .range(0, word.length)
+      .filter(i -> !temp.contains(word[i]))
       .forEach(
         i -> {
           temp.push(word[i]);
-          genSubsets(word, subsets, temp, i + 1);
+          genCombos(word, subsets, temp);
           temp.pop();
         }
       );
