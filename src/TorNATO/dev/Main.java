@@ -262,11 +262,11 @@ public class Main {
   }
 
   /**
-   * Generates a "power set" of characters from a given character
+   * Generates a combinations of characters from a given character
    * array
    *
    * @param word A character array which contains characters for which
-   *             we wish to find a subset
+   *             we wish to find combinations
    * @return Combination of all the characters that are
    * contained in the passed word character array
    */
@@ -275,7 +275,7 @@ public class Main {
     if (word.length == 0) {
       return subsets;
     }
-    genCombos(word, subsets, new Stack<>());
+    genCombos(word, subsets, new Stack<>(), new HashSet<>());
     return subsets;
   }
 
@@ -292,12 +292,17 @@ public class Main {
   private static void genCombos(
     char[] word,
     Queue<Word> subsets,
-    Stack<Character> temp
+    Stack<Character> temp,
+    Set<String> words
   ) {
+    // Uses hashset to maintain O(1) time in checking validity
+    // NOTE: I cannot simply use a TreeSet, becomes I am comparing
+    // objects based on score
     String result = toString(new ArrayList<>(temp));
     if (wordList.containsKey(result) &&
-            !subsets.contains(wordList.get(result))) {
+            !words.contains(result)) {
       subsets.add(wordList.get(result));
+      words.add(result);
     }
 
     // loops through the word and recursively backtracks
@@ -308,7 +313,7 @@ public class Main {
       .forEach(
         i -> {
           temp.push(word[i]);
-          genCombos(word, subsets, temp);
+          genCombos(word, subsets, temp, words);
           temp.pop();
         }
       );
