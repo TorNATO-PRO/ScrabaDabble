@@ -208,7 +208,8 @@ public class Main {
         System.out.println("That is not a valid input!");
       } else if (input.length() <= 10) {
         Queue<Word> combos = genCombos(input.toCharArray());
-        for (Word word : combos) {
+        while(!combos.isEmpty()) {
+          Word word = combos.remove();
           System.out.println(
             "Word: " + word.getWord() + ", Score: " + word.getScore()
           );
@@ -294,10 +295,9 @@ public class Main {
     Stack<Character> temp
   ) {
     String result = toString(new ArrayList<>(temp));
-    System.out.println(result);
-    if (wordList.containsKey(result)) {
+    if (wordList.containsKey(result) &&
+            !subsets.contains(wordList.get(result))) {
       subsets.add(wordList.get(result));
-      return;
     }
 
     // loops through the word and recursively backtracks
