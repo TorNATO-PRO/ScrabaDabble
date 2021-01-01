@@ -198,18 +198,25 @@ public class Main {
    *               for the user to enter a character sequence
    */
   public static void cheat(Scanner userIn) {
-    System.out.println("Please enter a character sequence");
-    String input = userIn.nextLine().toUpperCase();
-    if (!isAlphabetic(input) || input.length() > MAX_INPUT) {
-      System.out.println("That is not a valid input!");
-    } else {
-      Set<Word> combos = genCombos(input.toCharArray());
-      for (Word word : combos) {
-        System.out.println(
-          "Word: " + word.getWord() + ", Score: " + word.getScore()
-        );
+    boolean stop = false;
+    do {
+      System.out.println("Please enter a character sequence (Type :E to exit)");
+      String input = userIn.nextLine().toUpperCase();
+      if (input.equalsIgnoreCase(":E")) {
+        stop = true;
+      } else if (!isAlphabetic(input) || input.length() > MAX_INPUT) {
+        System.out.println("That is not a valid input!");
+      } else if (input.length() <= 10) {
+        Queue<Word> combos = genCombos(input.toCharArray());
+        for (Word word : combos) {
+          System.out.println(
+            "Word: " + word.getWord() + ", Score: " + word.getScore()
+          );
+        }
+      } else {
+        System.out.println("Your input is too long!");
       }
-    }
+    } while (!stop);
   }
 
   /**
@@ -262,8 +269,8 @@ public class Main {
    * @return Combination of all the characters that are
    * contained in the passed word character array
    */
-  public static Set<Word> genCombos(char[] word) {
-    Set<Word> subsets = new TreeSet<>();
+  public static Queue<Word> genCombos(char[] word) {
+    Queue<Word> subsets = new PriorityQueue<>();
     if (word.length == 0) {
       return subsets;
     }
@@ -283,12 +290,14 @@ public class Main {
    */
   private static void genCombos(
     char[] word,
-    Set<Word> subsets,
+    Queue<Word> subsets,
     Stack<Character> temp
   ) {
     String result = toString(new ArrayList<>(temp));
+    System.out.println(result);
     if (wordList.containsKey(result)) {
       subsets.add(wordList.get(result));
+      return;
     }
 
     // loops through the word and recursively backtracks
