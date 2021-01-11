@@ -40,9 +40,9 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 /**
- * A main method for my Scrabble program. Basically, what this program allows you
- * to do is look up if a given word is a valid scrabble word, or cheat based on the
- * current characters that you hold in your deck!
+ * A main method for my Scrabble program. Basically, what this program allows you to do is look up
+ * if a given word is a valid scrabble word, or cheat based on the current characters that you hold
+ * in your deck!
  *
  * @author Nathan Waltz
  * @version 0.1
@@ -52,12 +52,9 @@ public class Main {
 
   // fields for storing the maximum possible input, a wordlist, and character values
   private static final int MAX_INPUT = 15; // size of scrabble board
-  private static Map<Character, Integer> characterValues;
-
-  /**
-   * A dictionary of all the words that are available in scrabble
-   */
+  /** A dictionary of all the words that are available in scrabble */
   public static Map<String, Word> wordList;
+  private static Map<Character, Integer> characterValues;
 
   // loads data from files
   static {
@@ -71,16 +68,13 @@ public class Main {
 
   /**
    * Main method
+   *
    * @param args Unused command line arguments
    */
   public static void main(String[] args) {
     Scanner userIn = new Scanner(System.in);
-    System.out.println(
-      "Welcome to my scrabble cheating program! Press (:C) to"
-    );
-    System.out.println(
-      "cheat and (:L) to lookup. Also, press (:Q) to quit. Enjoy!"
-    );
+    System.out.println("Welcome to my scrabble cheating program! Press (:C) to");
+    System.out.println("cheat and (:L) to lookup. Also, press (:Q) to quit. Enjoy!");
     boolean stop = false;
     do {
       String firstInput = userIn.nextLine();
@@ -98,20 +92,17 @@ public class Main {
   }
 
   /**
-   * readDictionary method: Takes in a filename and reads the words quickly
-   * using a BufferedReader, and afterwards stores the words in a
-   * dictionary for O(1) access time
+   * readDictionary method: Takes in a filename and reads the words quickly using a BufferedReader,
+   * and afterwards stores the words in a dictionary for O(1) access time
    *
    * @param filename A filename which contains the path to the dictionary
-   * @return A HashMap containing a dictionary which consists of the word as a
-   * String and the corresponding Word object
-   * @throws IOException If something goes wrong with reading the file, it throws
-   * this exception
+   * @return A HashMap containing a dictionary which consists of the word as a String and the
+   *     corresponding Word object
+   * @throws IOException If something goes wrong with reading the file, it throws this exception
    */
-  public static Map<String, Word> readDictionary(String filename)
-    throws IOException {
+  public static Map<String, Word> readDictionary(String filename) throws IOException {
     BufferedReader br;
-    HashMap<String, Word> wordMap = new HashMap<>();
+    Map<String, Word> wordMap = new TreeMap<>();
     try {
       br = new BufferedReader(new FileReader(filename));
       String currentLine;
@@ -126,18 +117,13 @@ public class Main {
   }
 
   /**
-   * A helper method to verify that the input from the
-   * wordlist is indeed a valid word that fits within the
-   * constraints of this program
+   * A helper method to verify that the input from the wordlist is indeed a valid word that fits
+   * within the constraints of this program
    *
-   * @param line A line that is provided by the client that they wish
-   *             to be validated
+   * @param line A line that is provided by the client that they wish to be validated
    * @param wordMap A word map that acts as a dictionary-like data structure
    */
-  private static void validateWordlistLine(
-    String line,
-    Map<String, Word> wordMap
-  ) {
+  private static void validateWordlistLine(String line, Map<String, Word> wordMap) {
     String toUpperCase = line.toUpperCase();
     if (toUpperCase.length() <= MAX_INPUT && isAlphabetic(toUpperCase)) {
       wordMap.put(toUpperCase, new Word(toUpperCase, score(toUpperCase)));
@@ -145,20 +131,17 @@ public class Main {
   }
 
   /**
-   * readDictionary method: Takes in a filename and reads the characters quickly
-   * using a BufferedReader, and afterwards stores the words in a
-   * dictionary for O(1) access time
+   * readDictionary method: Takes in a filename and reads the characters quickly using a
+   * BufferedReader, and afterwards stores the words in a dictionary for O(1) access time
    *
    * @param filename A filename which contains the path to the dictionary
-   * @return A HashMap containing a dictionary which consists of a character as
-   * well as score of that character
-   * @throws IOException If something goes wrong with reading the file, it throws
-   * this exception
+   * @return A HashMap containing a dictionary which consists of a character as well as score of
+   *     that character
+   * @throws IOException If something goes wrong with reading the file, it throws this exception
    */
-  public static Map<Character, Integer> readCharacterValues(String filename)
-    throws IOException {
+  public static Map<Character, Integer> readCharacterValues(String filename) throws IOException {
     BufferedReader br;
-    Map<Character, Integer> valueOfCharacter = new HashMap<>();
+    Map<Character, Integer> valueOfCharacter = new TreeMap<>();
     try {
       br = new BufferedReader(new FileReader(filename));
       String currentLine;
@@ -176,14 +159,10 @@ public class Main {
    * Parses the character file to obtain the scores for those characters
    *
    * @param line The line passed by a client which is intended to be parsed
-   * @param valueOfCharacter A dictionary-like data structure containing all of the
-   *                         characters in the file as well as their corresponding integer
-   *                         value
+   * @param valueOfCharacter A dictionary-like data structure containing all of the characters in
+   *     the file as well as their corresponding integer value
    */
-  private static void parseCharacterValues(
-    String line,
-    Map<Character, Integer> valueOfCharacter
-  ) {
+  private static void parseCharacterValues(String line, Map<Character, Integer> valueOfCharacter) {
     String[] values = line.split(",");
     Character character = values[0].trim().charAt(0);
     Integer val = Integer.parseInt(values[1].trim());
@@ -191,11 +170,9 @@ public class Main {
   }
 
   /**
-   * Cheat method: Allows the user to cheat given a sequence
-   * of characters
+   * Cheat method: Allows the user to cheat given a sequence of characters
    *
-   * @param userIn A scanner parameter which allows
-   *               for the user to enter a character sequence
+   * @param userIn A scanner parameter which allows for the user to enter a character sequence
    */
   public static void cheat(Scanner userIn) {
     boolean stop = false;
@@ -207,12 +184,19 @@ public class Main {
       } else if (!isAlphabetic(input) || input.length() > MAX_INPUT) {
         System.out.println("That is not a valid input!");
       } else if (input.length() <= 10) {
+        System.out.println(input.toCharArray());
+        long time1 = System.currentTimeMillis();
         Queue<Word> combos = genCombos(input.toCharArray());
-        while(!combos.isEmpty()) {
+        long time2 = System.currentTimeMillis();
+        System.out.println(
+            "Time to execute with input of length "
+                + input.length()
+                + " = "
+                + (time2 - time1)
+                + " milliseconds");
+        while (!combos.isEmpty()) {
           Word word = combos.remove();
-          System.out.println(
-            "Word: " + word.getWord() + ", Score: " + word.getScore()
-          );
+          System.out.println("Word: " + word.getWord() + ", Score: " + word.getScore());
         }
       } else {
         System.out.println("Your input is too long!");
@@ -221,11 +205,9 @@ public class Main {
   }
 
   /**
-   * Lookup method: Allows the user to see if a given String
-   * exists
+   * Lookup method: Allows the user to see if a given String exists
    *
-   * @param userIn A scanner parameter which allows
-   *               for the user to enter a word
+   * @param userIn A scanner parameter which allows for the user to enter a word
    */
   public static void lookup(Scanner userIn) {
     System.out.println("Please enter a word");
@@ -233,23 +215,20 @@ public class Main {
     String upperCaseInput = input.toUpperCase();
     if (wordList.containsKey(upperCaseInput)) {
       System.out.println(
-        input +
-        " is a valid word with a score of " +
-        wordList.get(upperCaseInput).getScore() +
-        "!"
-      );
+          input
+              + " is a valid word with a score of "
+              + wordList.get(upperCaseInput).getScore()
+              + "!");
     } else {
       System.out.println("Invalid word!");
     }
   }
 
   /**
-   * Checks to see if all of the character in a String
-   * are alphabetic
+   * Checks to see if all of the character in a String are alphabetic
    *
    * @param input A given String provided by the client
-   * @return Boolean representing whether or not all of the
-   * characters in the input are alphabetic
+   * @return Boolean representing whether or not all of the characters in the input are alphabetic
    */
   private static boolean isAlphabetic(String input) {
     char[] charArray = input.toCharArray();
@@ -262,68 +241,70 @@ public class Main {
   }
 
   /**
-   * Generates a combinations of characters from a given character
-   * array
+   * Generates a combinations of characters from a given character array
    *
-   * @param word A character array which contains characters for which
-   *             we wish to find combinations
-   * @return Combination of all the characters that are
-   * contained in the passed word character array
+   * @param word A character array which contains characters for which we wish to find combinations
+   * @return Combination of all the characters that are contained in the passed word character array
    */
   public static Queue<Word> genCombos(char[] word) {
     Queue<Word> subsets = new PriorityQueue<>();
     if (word.length == 0) {
       return subsets;
     }
-    genCombos(word, subsets, new Stack<>(), new HashSet<>());
+    int[] characterCount = characterCount(word);
+    genCombos(word, subsets, new Stack<>(), new TreeSet<>(), characterCount, new int[26]);
     return subsets;
   }
 
   /**
-   * A helper method which does the heavy lifting and generates the combinations
-   * of the power set
+   * A helper method which does the heavy lifting and generates the combinations of the power set
    *
-   * @param word A character array which contains characters for which
-   *             we wish to find a combination
+   * @param word A character array which contains characters for which we wish to find a combination
    * @param subsets A set of subsets of the word parameter
-   * @param temp A stack of characters which stores values obtained throughout
-   *             the execution of this method
+   * @param temp A stack of characters which stores values obtained throughout the execution of this
+   *     method
+   * @param words A set which contains the Strings generated through the duration of this method's
+   *     recursion
    */
   private static void genCombos(
-    char[] word,
-    Queue<Word> subsets,
-    Stack<Character> temp,
-    Set<String> words
-  ) {
+      char[] word,
+      Queue<Word> subsets,
+      Stack<Character> temp,
+      Set<String> words,
+      int[] wordCharacterCount,
+      int[] tempCharacterCount) {
     // Uses hashset to maintain O(1) time in checking validity
     // NOTE: I cannot simply use a TreeSet, becomes I am comparing
     // objects based on score
     String result = toString(new ArrayList<>(temp));
-    if (wordList.containsKey(result) &&
-            !words.contains(result)) {
+    if (wordList.containsKey(result) && !words.contains(result)) {
       subsets.add(wordList.get(result));
       words.add(result);
     }
 
     // loops through the word and recursively backtracks
     // in a functional paradigm manner
-    IntStream
-      .range(0, word.length)
-      .filter(i -> !temp.contains(word[i]))
-      .forEach(
-        i -> {
-          temp.push(word[i]);
-          genCombos(word, subsets, temp, words);
-          temp.pop();
-        }
-      );
+    IntStream.range(0, word.length)
+        .forEach(
+            i -> {
+              char c = word[i];
+              if (wordCharacterCount[characterToInt(c)] > tempCharacterCount[characterToInt(c)]) {
+                temp.push(c);
+                tempCharacterCount[characterToInt(c)] += 1;
+                genCombos(word, subsets, temp, words, wordCharacterCount, tempCharacterCount);
+                tempCharacterCount[characterToInt(temp.pop())] -= 1;
+              }
+            });
+  }
+
+  private static int characterToInt(char c) {
+    return c - 65;
   }
 
   /**
    * Converts a list of characters to a String
    *
-   * @param array A list of characters which will be converted to
-   *              a string
+   * @param array A list of characters which will be converted to a string
    * @return A string representation of the passed array parameter
    */
   private static String toString(List<Character> array) {
@@ -339,13 +320,17 @@ public class Main {
    * Finds a score for a given word
    *
    * @param word A word passed by the client
-   * @return A score corresponding to the cumulative
-   * score of that word
+   * @return A score corresponding to the cumulative score of that word
    */
   public static int score(String word) {
-    return IntStream
-      .range(0, word.length())
-      .map(i -> characterValues.get(word.charAt(i)))
-      .sum();
+    return IntStream.range(0, word.length()).map(i -> characterValues.get(word.charAt(i))).sum();
+  }
+
+  private static int[] characterCount(char[] sequence) {
+    int[] count = new int[26];
+    for (char c : sequence) {
+      count[characterToInt(c)] += 1;
+    }
+    return count;
   }
 }
